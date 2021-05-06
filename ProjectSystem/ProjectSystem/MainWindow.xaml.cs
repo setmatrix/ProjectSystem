@@ -22,6 +22,8 @@ namespace ProjectSystem
     {
         public MainWindow()
         {
+            ImageBrush brush = new ImageBrush(new BitmapImage(new Uri("Images/mapa_v5.png", UriKind.Absolute)));
+            Background = brush;
             InitializeComponent();
         }
     }
