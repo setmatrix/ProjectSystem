@@ -28,13 +28,15 @@ namespace ProjectSystem
             InitializeComponent();
             setTrainMove();
         }
+        private Random rnd;
         private void setTrainMove()
         {
+            rnd = new Random();
             Storyboard BubbleStoryboard = new Storyboard();
             Rectangle rec = new Rectangle()
             {
-                Width = 400,
-                Height = 280
+                Width = 600,
+                Height = 420
             };
             rec.Fill = new ImageBrush
             {
@@ -42,7 +44,7 @@ namespace ProjectSystem
             };
             //- MOVE - 
             DoubleAnimation animMove = new DoubleAnimation();
-            animMove.Duration = new Duration(TimeSpan.FromSeconds(10));
+            animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(1,10)));
             animMove.From = 1280 + rec.Width;
             animMove.To = 0 - rec.Width;
             Storyboard.SetTarget(animMove, rec);
