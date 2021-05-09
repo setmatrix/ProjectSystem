@@ -32,7 +32,7 @@ namespace ProjectSystem
         private void setTrainMove()
         {
             rnd = new Random();
-            Storyboard BubbleStoryboard = new Storyboard();
+            Storyboard storyboard = new Storyboard();
             Rectangle rec = new Rectangle()
             {
                 Width = 600,
@@ -49,10 +49,10 @@ namespace ProjectSystem
             animMove.To = 0 - rec.Width;
             Storyboard.SetTarget(animMove, rec);
             Storyboard.SetTargetProperty(animMove, new PropertyPath(Canvas.LeftProperty));
-            BubbleStoryboard.Children.Add(animMove);
+            storyboard.Children.Add(animMove);
             canvas.Children.Add(rec);
             Canvas.SetTop(rec, 0);
-            BubbleStoryboard.Begin();
+            storyboard.Begin();
         }
     }
 }
