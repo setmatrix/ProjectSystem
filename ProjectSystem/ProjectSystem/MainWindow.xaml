@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjectSystem"
         mc:Ignorable="d"
-        Title="MainWindow" Height="4372" Width="3000">
+        Title="MainWindow" Height="1024" Width="1280" MaxHeight="1024" MaxWidth="1280" MinHeight="1024" MinWidth="1280">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Canvas Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Name="canvas"/>
     </Grid>
 </Window>
