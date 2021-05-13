@@ -28,39 +28,38 @@ namespace ProjectSystem
             ImageBrush brush = new ImageBrush(new BitmapImage(new Uri("Images/mapa_v5.png", UriKind.Relative)));
             Background = brush;
             InitializeComponent();
-            setTrainMove();
-            setCarMove();
-        }
-        private Random rnd;
-        private void setTrainMove()
-        {
-            rnd = new Random();
-            Storyboard storyboard = new Storyboard();
-            Rectangle rec = new Rectangle()
+            train = new Rectangle()
             {
                 Width = 600,
                 Height = 420
             };
-            rec.Fill = new ImageBrush
+            train.Fill = new ImageBrush
             {
                 ImageSource = new BitmapImage(new Uri("Images/train.png", UriKind.Relative))
             };
-            //- MOVE - 
+            setTrainMove();
+            setCarMove();
+        }
+        private Random rnd;
+        private Storyboard train_storyboard;
+        private Rectangle train;
+        private DoubleAnimation trainMove;
 
-            DoubleAnimation animMove = new DoubleAnimation();
-            animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(1, 10)));
-            animMove.From = 1280 + rec.Width;
-            animMove.To = 0 - rec.Width;
+        private void setTrainMove()
+        {
+            rnd = new Random();
+            train_storyboard = new Storyboard();
+            trainMove = new DoubleAnimation();
+            trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 15)));
+            trainMove.From = 1280 + train.Width;
+            trainMove.To = 0 - train.Width;
+            Storyboard.SetTarget(trainMove, train);
+            Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
+            train_storyboard.Children.Add(trainMove);
+            train_canvas.Children.Add(train);
+            Canvas.SetRight(train, 0);
             
-            Storyboard.SetTarget(animMove, rec);
-            Storyboard.SetTargetProperty(animMove, new PropertyPath(Canvas.LeftProperty));
-            storyboard.Children.Add(animMove);
-            canvas.Children.Add(rec);
-            Canvas.SetTop(rec, 0);
-            
-            storyboard.Begin();
-            
-              
+            train_storyboard.Begin();       
         }
         private void setCarMove()
         {
