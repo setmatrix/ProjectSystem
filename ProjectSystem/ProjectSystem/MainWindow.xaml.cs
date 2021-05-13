@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
-
+using System.Windows.Threading;
 
 namespace ProjectSystem
 {
@@ -23,6 +23,14 @@ namespace ProjectSystem
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Random rnd;
+        private Storyboard train_storyboard = new Storyboard();
+        private Rectangle train;
+        private Rectangle BlueCar;
+        private Rectangle YellowCar;
+        private Rectangle RedCar;
+        private DoubleAnimation trainMove = new DoubleAnimation();
+
         public MainWindow()
         {
             ImageBrush brush = new ImageBrush(new BitmapImage(new Uri("Images/mapa_v5.png", UriKind.Relative)));
@@ -37,51 +45,139 @@ namespace ProjectSystem
             {
                 ImageSource = new BitmapImage(new Uri("Images/train.png", UriKind.Relative))
             };
-            setTrainMove();
-            setCarMove();
-        }
-        private Random rnd;
-        private Storyboard train_storyboard;
-        private Rectangle train;
-        private DoubleAnimation trainMove;
-
-        private void setTrainMove()
-        {
-            rnd = new Random();
-            train_storyboard = new Storyboard();
-            trainMove = new DoubleAnimation();
-            trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 15)));
-            trainMove.From = 1280 + train.Width;
-            trainMove.To = 0 - train.Width;
-            Storyboard.SetTarget(trainMove, train);
-            Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
-            train_storyboard.Children.Add(trainMove);
-            train_canvas.Children.Add(train);
-            Canvas.SetRight(train, 0);
-            
-            train_storyboard.Begin();       
-        }
-        private void setCarMove()
-        {
-            rnd = new Random();
-            int rnd_1 = rnd.Next(1, 10);
-            Storyboard storyboard = new Storyboard();
-            Rectangle rec = new Rectangle()
+            BlueCar = new Rectangle()
             {
                 Width = 78,
                 Height = 50
             };
-            rec.Fill = new ImageBrush
+            BlueCar.Fill = new ImageBrush
             {
                 ImageSource = new BitmapImage(new Uri("Images/BlueCar.png", UriKind.Relative))
             };
+            RedCar = new Rectangle()
+            {
+                Width = 78,
+                Height = 50
+            };
+            RedCar.Fill = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri("Images/RedCar.png", UriKind.Relative))
+            };
+            YellowCar = new Rectangle()
+            {
+                Width = 78,
+                Height = 50
+            };
+            YellowCar.Fill = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri("Images/YellowCar.png", UriKind.Relative))
+            };
+            Storyboard.SetTarget(trainMove, train);
+            Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
+            trainMove.From = 1280 + train.Width;
+            trainMove.To = 0 - train.Width;
+            train_storyboard.Children.Add(trainMove);
+            train_canvas.Children.Add(train);
+            Canvas.SetRight(train, 0);
+
+            Thread thr = new Thread(Threads);
+            thr.Start();
+        }
+
+        private void Threads()
+        {
+            Thread trainthr = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                {
+                    setTrainMove();
+                }, null);
+            });
+            //Thread trainwait = new Thread(() =>
+            //{
+            //    Thread.CurrentThread.IsBackground = true;
+            //    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+            //    {
+            //        TrainRestart();
+            //    }, null);
+            //});
+            Thread carthr = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                {
+                    setCarMove();
+                }, null);
+            });
+            //setTrainMove();
+            //setCarMove();
+            rnd = new Random();
+            trainthr.Start();
+            //Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 9)));
+            carthr.Start();
+            //trainwait.Start();
+        }
+
+        private void TrainRestart(object sender, EventArgs e)
+        {
+            train_storyboard.Stop();
+            rnd = new Random();
+            trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
+            
+            train_storyboard.Begin();
+        }
+
+        private Object TakeTheCar(int ch)
+        {
+            switch(ch)
+            {
+                case 1:
+                    return BlueCar;
+                case 2:
+                    return YellowCar;
+                case 3:
+                    return RedCar;
+            }
+            return BlueCar;
+        }
+
+        private void setTrainMove()
+        {
+            rnd = new Random();
+            trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
+            
+            train_storyboard.Completed += new EventHandler(TrainRestart);
+
+            train_storyboard.Begin();
+        }
+
+        //void onButtonClick(object sender, EventArgs e)
+        //{
+        //    Delay(1000, (o, a) => MessageBox.Show("Test"));
+        //}
+
+        //static void Delay(int ms, EventHandler action)
+        //{
+        //    var tmp = new Timer { Interval = ms };
+        //    tmp.Tick += new EventHandler((o, e) => tmp.Enabled = false);                     <====== na póżniej
+        //    tmp.Tick += action;
+        //    tmp.Enabled = true;
+        //}
+        private void setCarMove()
+        {
+            rnd = new Random();
+            int rnd_1 = rnd.Next(1, 10);
+            int carrnd = rnd.Next(1, 4);
+            Storyboard storyboard = new Storyboard();
             //MOVE
             DoubleAnimation animMove = new DoubleAnimation();
+            Rectangle rec = (Rectangle)TakeTheCar(carrnd);
             animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd_1));
-            animMove.From = 0 - rec.Width;
-            animMove.To = 800;
+                animMove.From = 0 - rec.Width;
+                animMove.To = 800;
             double distance_x = 800 + rec.Width;
-            double  reverse_velocity = rnd_1/ distance_x;
+            double reverse_velocity = rnd_1/ distance_x;
             double distance = 0;
             double distance_y = 0;
 
@@ -89,7 +185,7 @@ namespace ProjectSystem
             Storyboard.SetTargetProperty(animMove, new PropertyPath(Canvas.LeftProperty));
             storyboard.Children.Add(animMove);
             canvas_1.Children.Add(rec);
-            Canvas.SetTop(rec, 100);
+            Canvas.SetTop(rec, 125);
             animMove.Completed += new EventHandler(curve_1);
             storyboard.Begin();
             //NEW ANIM
