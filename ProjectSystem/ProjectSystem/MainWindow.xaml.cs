@@ -51,54 +51,16 @@ namespace ProjectSystem
             animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(1, 10)));
             animMove.From = 1280 + rec.Width;
             animMove.To = 0 - rec.Width;
-            //animMove.To = 0 - rec.Width;
+            
             Storyboard.SetTarget(animMove, rec);
             Storyboard.SetTargetProperty(animMove, new PropertyPath(Canvas.LeftProperty));
             storyboard.Children.Add(animMove);
             canvas.Children.Add(rec);
             Canvas.SetTop(rec, 0);
-            //animMove.Completed += new EventHandler(animate_Completed);
-            storyboard.Begin();
-            /*
-            void animate_Completed(object sender, EventArgs e)
-            {
-                //MessageBox.Show("Hello, world!");
-
-
-                DoubleAnimation animMove_1 = new DoubleAnimation();
-                animMove_1.Duration = new Duration(TimeSpan.FromSeconds(10));
-                animMove_1.From = 100;
-                animMove_1.To = -100;
-                //canvas.Children.Remove(rec);
-                storyboard.Children.Remove(animMove);
-                Storyboard.SetTarget(animMove_1, rec);
-                Storyboard.SetTargetProperty(animMove_1, new PropertyPath(Canvas.TopProperty));
-                storyboard.Children.Add(animMove_1);
-                //canvas_1.Children.Add(rec);
-                //Canvas.SetTop(rec, 0);
-                animMove_1.Completed += new EventHandler(animate_Completed_1);
-                storyboard.Begin();
-            }
             
-            void animate_Completed_1(object sender, EventArgs e)
-            {
-               // MessageBox.Show("Hello, world!");
-
-
-                DoubleAnimation animMove_1 = new DoubleAnimation();
-                animMove_1.Duration = new Duration(TimeSpan.FromSeconds(10));
-                animMove_1.From = 100;
-                animMove_1.To = -200;
-                //canvas.Children.Remove(rec);
-                storyboard.Children.Remove(animMove);
-                Storyboard.SetTarget(animMove_1, rec);
-                Storyboard.SetTargetProperty(animMove_1, new PropertyPath(Canvas.TopProperty));
-                storyboard.Children.Add(animMove_1);
-                //canvas_1.Children.Add(rec);
-                //Canvas.SetTop(rec, 0);
-                storyboard.Begin();
-            }
-            */
+            storyboard.Begin();
+            
+              
         }
         private void setCarMove()
         {
