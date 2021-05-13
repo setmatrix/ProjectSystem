@@ -20,7 +20,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Canvas Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Name="canvas"/>
+        <Canvas Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Name="train_canvas"/>
         <Canvas Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Name="canvas_1"/>
     </Grid>
 </Window>
