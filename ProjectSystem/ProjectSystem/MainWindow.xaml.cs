@@ -44,22 +44,25 @@ namespace ProjectSystem
             szlaban_closed = new ImageBrush(new BitmapImage(new Uri("Images/szlaban_closed.png", UriKind.Relative)));
             szlaban1 = new Rectangle()
             {
-                Width = 78,
+                Width = 150,
                 Height = 50
             };
             szlaban1.Fill = szlaban_open;
             szlaban2 = new Rectangle()
             {
-                Width = 78,
+                Width = 125,
                 Height = 50
             };
             szlaban2.Fill = szlaban_open;
+            ScaleTransform rt = new ScaleTransform();
+            rt.ScaleX = -1;
+            szlaban2.RenderTransform = rt;
             train_canvas.Children.Add(szlaban1);
-            Canvas.SetLeft(szlaban1, 250);
+            Canvas.SetLeft(szlaban1, 220);
             Canvas.SetZIndex(szlaban1, 100);
             Canvas.SetBottom(szlaban1, -120);
             train_canvas.Children.Add(szlaban2);
-            Canvas.SetLeft(szlaban2, 220);
+            Canvas.SetLeft(szlaban2, 170);
             Canvas.SetBottom(szlaban2, -50);
             train = new Rectangle()
             {
@@ -159,7 +162,7 @@ namespace ProjectSystem
             szlaban2.Fill = szlaban_closed;
         }
 
-        private Object TakeTheCar(int ch)
+        private Rectangle TakeTheCar(int ch)
         {
             switch(ch)
             {
@@ -184,19 +187,6 @@ namespace ProjectSystem
             szlaban1.Fill = szlaban_closed;
             szlaban2.Fill =szlaban_closed;
         }
-
-        //void onButtonClick(object sender, EventArgs e)
-        //{
-        //    Delay(1000, (o, a) => MessageBox.Show("Test"));
-        //}
-
-        //static void Delay(int ms, EventHandler action)
-        //{
-        //    var tmp = new Timer { Interval = ms };
-        //    tmp.Tick += new EventHandler((o, e) => tmp.Enabled = false);                     <====== na póżniej
-        //    tmp.Tick += action;
-        //    tmp.Enabled = true;
-        //}
         private void setCarMove()
         {
             rnd = new Random();
@@ -205,11 +195,11 @@ namespace ProjectSystem
             Storyboard storyboard = new Storyboard();
             //MOVE
             DoubleAnimation animMove = new DoubleAnimation();
-            Rectangle rec = (Rectangle)TakeTheCar(carrnd);
+            Rectangle rec = TakeTheCar(carrnd);
             animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd_1));
                 animMove.From = 0 - rec.Width;
                 animMove.To = 800;
-            double distance_x = 800 + rec.Width;
+            double distance_x = (double)(animMove.To+ rec.Width);
             double reverse_velocity = rnd_1/ distance_x;
             double distance = 0;
             double distance_y = 0;
@@ -233,9 +223,9 @@ namespace ProjectSystem
                 animMove_1_x.To = 900;
                 distance_x = 900 - 800;
                 //animMove_1_y
-                animMove_1_y.From = 100;
+                animMove_1_y.From = 125;
                 animMove_1_y.To = 200;
-                distance_y = 200 - 100;
+                distance_y = (double)(animMove_1_y.To - animMove_1_y.From);
                 distance = Math.Sqrt(distance_x* distance_x + distance_y* distance_y);
                 animMove_1_x.Duration = new Duration(TimeSpan.FromSeconds(reverse_velocity * distance));
                 animMove_1_y.Duration = new Duration(TimeSpan.FromSeconds(reverse_velocity * distance));
