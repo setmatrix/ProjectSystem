@@ -24,6 +24,10 @@ namespace ProjectSystem
     public partial class MainWindow : Window
     {
         private Random rnd;
+        private Rectangle szlaban1;
+        private Rectangle szlaban2;
+        private ImageBrush szlaban_open;
+        private ImageBrush szlaban_closed;
         private Storyboard train_storyboard = new Storyboard();
         private Rectangle train;
         private Rectangle BlueCar;
@@ -36,6 +40,27 @@ namespace ProjectSystem
             ImageBrush brush = new ImageBrush(new BitmapImage(new Uri("Images/mapa_v5.png", UriKind.Relative)));
             Background = brush;
             InitializeComponent();
+            szlaban_open = new ImageBrush(new BitmapImage(new Uri("Images/szlaban_open.png", UriKind.Relative)));
+            szlaban_closed = new ImageBrush(new BitmapImage(new Uri("Images/szlaban_closed.png", UriKind.Relative)));
+            szlaban1 = new Rectangle()
+            {
+                Width = 78,
+                Height = 50
+            };
+            szlaban1.Fill = szlaban_open;
+            szlaban2 = new Rectangle()
+            {
+                Width = 78,
+                Height = 50
+            };
+            szlaban2.Fill = szlaban_open;
+            train_canvas.Children.Add(szlaban1);
+            Canvas.SetLeft(szlaban1, 250);
+            Canvas.SetZIndex(szlaban1, 100);
+            Canvas.SetBottom(szlaban1, -120);
+            train_canvas.Children.Add(szlaban2);
+            Canvas.SetLeft(szlaban2, 220);
+            Canvas.SetBottom(szlaban2, -50);
             train = new Rectangle()
             {
                 Width = 600,
@@ -119,13 +144,19 @@ namespace ProjectSystem
             //trainwait.Start();
         }
 
-        private void TrainRestart(object sender, EventArgs e)
+        private async void TrainRestart(object sender, EventArgs e)
         {
+            szlaban1.Fill = szlaban_open;
+            szlaban2.Fill = szlaban_open;
+            rnd = new Random();
+            await Task.Delay(rnd.Next(2000, 10000));
             train_storyboard.Stop();
             rnd = new Random();
             trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
             
             train_storyboard.Begin();
+            szlaban1.Fill = szlaban_closed;
+            szlaban2.Fill = szlaban_closed;
         }
 
         private Object TakeTheCar(int ch)
@@ -150,6 +181,8 @@ namespace ProjectSystem
             train_storyboard.Completed += new EventHandler(TrainRestart);
 
             train_storyboard.Begin();
+            szlaban1.Fill = szlaban_closed;
+            szlaban2.Fill =szlaban_closed;
         }
 
         //void onButtonClick(object sender, EventArgs e)
