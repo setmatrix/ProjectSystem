@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\m_war\\Source\\Repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj": {}
+    "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\m_war\\Source\\Repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj": {
+    "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\m_war\\Source\\Repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
+        "projectUniqueName": "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
         "projectName": "ProjectSystem",
-        "projectPath": "C:\\Users\\m_war\\Source\\Repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
+        "projectPath": "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
         "packagesPath": "C:\\Users\\m_war\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\m_war\\Source\\Repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\obj\\",
+        "outputPath": "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\m_war\\AppData\\Roaming\\NuGet\\NuGet.Config",

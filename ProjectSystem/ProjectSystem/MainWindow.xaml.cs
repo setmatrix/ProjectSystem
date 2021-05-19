@@ -36,6 +36,7 @@ namespace ProjectSystem
         private DoubleAnimation trainMove = new DoubleAnimation();
         private List<double> list_speed = new List<double>();
         private int rnd_1;
+        private int carrnd;
         private int number = -1;
 
         public MainWindow()
@@ -151,6 +152,15 @@ namespace ProjectSystem
                 }, null);
             });
 
+            Thread carthr3 = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                {
+                    setCarMove();
+                }, null);
+            });
+
             //setTrainMove();
             //setCarMove();
             rnd = new Random();
@@ -160,6 +170,9 @@ namespace ProjectSystem
 
             Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
             carthr2.Start();
+
+            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
+            carthr3.Start();
             //trainwait.Start();
         }
 
@@ -207,19 +220,26 @@ namespace ProjectSystem
         {
             rnd = new Random();
             number++;
-            
 
+            
             // ABy sprawdzić jak auto się zbliża do innego auto, bez zbędnego ponownego urochamiania aby dobre prędkości wylosowało
             if (number == 0)
             {
                 rnd_1 = 8;
+                carrnd = 1;
             }
             else if (number == 1)
             {
-                rnd_1 = 3;
+                rnd_1 = 4;
+                carrnd = 2;
+            }
+            else if (number == 2)
+            {
+                rnd_1 = 1;
+                carrnd = 3;
             }
             //rnd_1 = rnd.Next(1, 10);
-            int carrnd = rnd.Next(1, 4);
+            //int carrnd = rnd.Next(1, 4);
             Storyboard storyboard = new Storyboard();
             //MOVE
             DoubleAnimation animMove = new DoubleAnimation();
@@ -247,12 +267,14 @@ namespace ProjectSystem
             {
                 foreach (var x in canvas_1.Children.OfType<Rectangle>())
                 {
-                    Rect auto1HitBox = new Rect(Canvas.GetLeft(rec), Canvas.GetTop(rec), rec.Width, rec.Height);
+                    //W załeżności jak szybko auto jedzie inne potrzebujemy Canvas.GetLeft(rec)+4+35/rnd_1
+                    Rect auto1HitBox = new Rect(Canvas.GetLeft(rec)+3+35/rnd_1, Canvas.GetTop(rec), rec.Width, rec.Height);
                     Rect auto2HitBox = new Rect(Canvas.GetLeft(x) - 20, Canvas.GetTop(x), x.Width, x.Height);
 
                     if (auto1HitBox.IntersectsWith(auto2HitBox) && (string)x.Name != (string)rec.Name && (rec.Name[(rec.Name).Length - 1]) > (x.Name[(x.Name).Length - 1]))
                     {
                         storyboard.SetSpeedRatio(list_speed[(rec.Name[(rec.Name).Length - 1]) - 48] / list_speed[(x.Name[(x.Name).Length - 1]) - 48]);
+                        rec.Name = x.Name;
                     }
                 }
             }
@@ -283,6 +305,8 @@ namespace ProjectSystem
                 Storyboard.SetTargetProperty(animMove_1_y, new PropertyPath(Canvas.TopProperty));
                 storyboard_1.Children.Add(animMove_1_y);
                 ////
+                animMove_1_x.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
+                animMove_1_y.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
                 storyboard_1.Begin();
             }
         }
