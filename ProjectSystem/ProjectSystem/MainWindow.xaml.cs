@@ -34,6 +34,9 @@ namespace ProjectSystem
         private Rectangle YellowCar;
         private Rectangle RedCar;
         private DoubleAnimation trainMove = new DoubleAnimation();
+        private List<double> list_speed = new List<double>();
+        private int rnd_1;
+        private int number = -1;
 
         public MainWindow()
         {
@@ -138,12 +141,25 @@ namespace ProjectSystem
                     setCarMove();
                 }, null);
             });
+
+            Thread carthr2 = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                {
+                    setCarMove();
+                }, null);
+            });
+
             //setTrainMove();
             //setCarMove();
             rnd = new Random();
             trainthr.Start();
             //Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 9)));
             carthr.Start();
+
+            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
+            carthr2.Start();
             //trainwait.Start();
         }
 
@@ -190,12 +206,25 @@ namespace ProjectSystem
         private void setCarMove()
         {
             rnd = new Random();
-            int rnd_1 = rnd.Next(1, 10);
+            number++;
+            
+
+            // ABy sprawdzić jak auto się zbliża do innego auto, bez zbędnego ponownego urochamiania aby dobre prędkości wylosowało
+            if (number == 0)
+            {
+                rnd_1 = 8;
+            }
+            else if (number == 1)
+            {
+                rnd_1 = 3;
+            }
+            //rnd_1 = rnd.Next(1, 10);
             int carrnd = rnd.Next(1, 4);
             Storyboard storyboard = new Storyboard();
             //MOVE
             DoubleAnimation animMove = new DoubleAnimation();
             Rectangle rec = TakeTheCar(carrnd);
+            rec.Name = "myRectangle" + number;
             animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd_1));
                 animMove.From = 0 - rec.Width;
                 animMove.To = 800;
@@ -203,15 +232,31 @@ namespace ProjectSystem
             double reverse_velocity = rnd_1/ distance_x;
             double distance = 0;
             double distance_y = 0;
-
+            list_speed.Add(reverse_velocity);
             Storyboard.SetTarget(animMove, rec);
             Storyboard.SetTargetProperty(animMove, new PropertyPath(Canvas.LeftProperty));
             storyboard.Children.Add(animMove);
             canvas_1.Children.Add(rec);
             Canvas.SetTop(rec, 125);
             animMove.Completed += new EventHandler(curve_1);
+            animMove.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
             storyboard.Begin();
             //NEW ANIM
+
+            void MainTimerEvent(object sender, EventArgs e)
+            {
+                foreach (var x in canvas_1.Children.OfType<Rectangle>())
+                {
+                    Rect auto1HitBox = new Rect(Canvas.GetLeft(rec), Canvas.GetTop(rec), rec.Width, rec.Height);
+                    Rect auto2HitBox = new Rect(Canvas.GetLeft(x) - 20, Canvas.GetTop(x), x.Width, x.Height);
+
+                    if (auto1HitBox.IntersectsWith(auto2HitBox) && (string)x.Name != (string)rec.Name && (rec.Name[(rec.Name).Length - 1]) > (x.Name[(x.Name).Length - 1]))
+                    {
+                        storyboard.SetSpeedRatio(list_speed[(rec.Name[(rec.Name).Length - 1]) - 48] / list_speed[(x.Name[(x.Name).Length - 1]) - 48]);
+                    }
+                }
+            }
+
             void curve_1(object sender, EventArgs e)
             {
                 Storyboard storyboard_1 = new Storyboard();
