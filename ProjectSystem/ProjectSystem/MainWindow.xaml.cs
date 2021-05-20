@@ -38,6 +38,8 @@ namespace ProjectSystem
         private int rnd_1;
         private int carrnd;
         private int number = -1;
+        private ScaleTransform trainrot = new ScaleTransform();
+        private int kier = 0;
 
         public MainWindow()
         {
@@ -185,6 +187,21 @@ namespace ProjectSystem
             train_storyboard.Stop();
             rnd = new Random();
             trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
+            kier = rnd.Next(1, 3);
+            if(kier == 1)
+            {
+                trainrot.ScaleX = -1;
+                train.RenderTransform = trainrot;
+                trainMove.From = 0 - train.Width;
+                trainMove.To = 1280 + train.Width;
+            }
+            else if(kier == 2)
+            {
+                trainrot.ScaleX = 1;
+                train.RenderTransform = trainrot;
+                trainMove.From = 1280 + train.Width;
+                trainMove.To = 0 - train.Width;
+            }
             
             train_storyboard.Begin();
             szlaban1.Fill = szlaban_closed;
