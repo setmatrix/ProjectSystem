@@ -135,7 +135,7 @@ namespace ProjectSystem
                 Thread.CurrentThread.IsBackground = true;
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
-                    setCarMove();
+                    firstCarMove();
                 }, null);
             });
             //setTrainMove();
@@ -187,20 +187,88 @@ namespace ProjectSystem
             szlaban1.Fill = szlaban_closed;
             szlaban2.Fill =szlaban_closed;
         }
+        private void firstCarMove()
+        {
+            int carrnd = rnd.Next(1, 4);
+            Rectangle rec = TakeTheCar(carrnd);
+            canvas_1.Children.Add(rec);
+            Canvas.SetTop(rec, 125);
+            double distance = 0;
+            double distance_x = 0;
+            double distance_y = 0;
+            bool g = true;
+            
+            void CarMove(object sender, EventArgs e)
+            {
+                anim_index++;
+                rnd = new Random();
+                int rnd_v = rnd.Next(1, 10);
+                
+                Storyboard storyboard = new Storyboard();
+                //MOVE
+                DoubleAnimation animMove_x = new DoubleAnimation();
+                DoubleAnimation animMove_y = new DoubleAnimation();
+                animMove_x.Duration = new Duration(TimeSpan.FromSeconds(rnd_v));
+                animMove_x.From = x_anim[anim_index-1];
+                animMove_x.To = x_anim[anim_index];
+                distance_x = (double)(animMove_x.To + rec.Width);
+
+                animMove_y.Duration = new Duration(TimeSpan.FromSeconds(rnd_v));
+                animMove_y.From = y_anim[anim_index - 1];
+                animMove_y.To = y_anim[anim_index];
+                distance_y = Distance((double)(animMove_y.To), (double)(animMove_y.From));
+                Storyboard.SetTarget(animMove_y, rec);
+                Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
+                storyboard.Children.Add(animMove_y);
+
+                distance_x = Distance((double)(animMove_x.To), (double)(animMove_x.From));
+                //distance = Distance(distance_y, distance_x);
+                double reverse_velocity = rnd_v / distance_x;
+                Storyboard.SetTarget(animMove_x, rec);
+                Storyboard.SetTargetProperty(animMove_x, new PropertyPath(Canvas.LeftProperty));
+                storyboard.Children.Add(animMove_x);
+
+                animMove_x.Completed += new EventHandler(CarMove);
+                storyboard.Begin();
+               // MessageBox.Show("Hello, world!");
+            }
+        }
+        private double Distance(double a, double b)
+        {
+            if (a > b)
+                return a - b;
+            else
+            return b - a;
+        }
+        private void set_anim_xy()
+        {
+            x_anim[0] = -78;
+            y_anim[0] = 0;
+            x_anim[1] = 800;
+            y_anim[1] = 125;
+            x_anim[2] = 900;
+            y_anim[2] = 200;
+        }
+        int anim_index = 0;
+       private int[] x_anim = new int[11];
+        int[] y_anim = new int[8];
+       
         private void setCarMove()
         {
+            
+
             rnd = new Random();
-            int rnd_1 = rnd.Next(1, 10);
+            int rnd_v = rnd.Next(1, 10);
             int carrnd = rnd.Next(1, 4);
             Storyboard storyboard = new Storyboard();
             //MOVE
             DoubleAnimation animMove = new DoubleAnimation();
             Rectangle rec = TakeTheCar(carrnd);
-            animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd_1));
+            animMove.Duration = new Duration(TimeSpan.FromSeconds(rnd_v));
                 animMove.From = 0 - rec.Width;
                 animMove.To = 800;
             double distance_x = (double)(animMove.To+ rec.Width);
-            double reverse_velocity = rnd_1/ distance_x;
+            double reverse_velocity = rnd_v/ distance_x;
             double distance = 0;
             double distance_y = 0;
 
