@@ -434,8 +434,8 @@ namespace ProjectSystem
             {
                 Storyboard storyboard_1 = new Storyboard();
                 //MessageBox.Show("Hello, world!");
-                DoubleAnimation animMove_1_x = new DoubleAnimation();
-                DoubleAnimation animMove_1_y = new DoubleAnimation();
+                DoubleAnimation animMove_1_x = new DoubleAnimation() ;
+                DoubleAnimation animMove_1_y = new DoubleAnimation() ;
                 //animMove_1_x
                 animMove_1_x.From = 800;
                 animMove_1_x.To = 900;
