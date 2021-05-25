@@ -244,7 +244,7 @@ namespace ProjectSystem
 
         private void setTabReverse()
         {
-            animXBef[0] = 900;
+            animXBef[0] = 1200;
             animXTo[0] = 250;
             animYBef[0] = 125;
             animYTo[0] = 125;
@@ -331,6 +331,7 @@ namespace ProjectSystem
                 ////
             canvas_2.Children.Add(autko);
             Canvas.SetTop(autko, 125);
+            Canvas.SetLeft(autko, 78);
             //index++;
             story.Completed += new EventHandler(MoveReverse);
             story.Begin();
