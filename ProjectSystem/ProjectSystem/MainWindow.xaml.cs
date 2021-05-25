@@ -245,19 +245,19 @@ namespace ProjectSystem
         private void setTabReverse()
         {
             animXBef[0] = 1200;
-            animXTo[0] = 250;
-            animYBef[0] = 125;
-            animYTo[0] = 125;
+            animXTo[0] = 240;
+            animYBef[0] = 110;
+            animYTo[0] = 110;
 
             animXBef[1] = animXTo[0];
-            animXTo[1] = 110;
+            animXTo[1] = 150;
             animYBef[1] = animYTo[0];
             animYTo[1] = -25;
 
             animXBef[2] = animXTo[1];
             animXTo[2] = 230;
             animYBef[2] = animYTo[1];
-            animYTo[2] = -90;
+            animYTo[2] = -100;
 
             animXBef[3] = animXTo[2];
             animXTo[3] = 850;
@@ -267,12 +267,12 @@ namespace ProjectSystem
             animXBef[4] = animXTo[3];
             animXTo[4] = 1000;
             animYBef[4] = animYTo[3];
-            animYTo[4] = -250;
+            animYTo[4] = -260;
 
             animXBef[5] = animXTo[4];
             animXTo[5] = 900;
             animYBef[5] = animYTo[4];
-            animYTo[5] = -400;
+            animYTo[5] = -420;
 
             animXBef[6] = animXTo[5];
             animXTo[6] = -78;
@@ -341,6 +341,7 @@ namespace ProjectSystem
                 if (index < 6)
                 {
                     index++;
+                    Control.Content = index;
                     //animMove_1_x
                     animMove_x.From = animxbef[index];
                     animMove_x.To = animxto[index];
