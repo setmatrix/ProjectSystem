@@ -106,6 +106,7 @@ namespace ProjectSystem
             {
                 ImageSource = new BitmapImage(new Uri("Images/YellowCar.png", UriKind.Relative))
             };
+            setTab();
             Storyboard.SetTarget(trainMove, train);
             Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
             trainMove.From = 1280 + train.Width;
@@ -141,7 +142,8 @@ namespace ProjectSystem
                 Thread.CurrentThread.IsBackground = true;
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
-                    setCarMove();
+                    //setCarMove();
+                    setCarMoveReverse();
                 }, null);
             });
 
@@ -150,7 +152,8 @@ namespace ProjectSystem
                 Thread.CurrentThread.IsBackground = true;
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
-                    setCarMove();
+                    //setCarMove();
+                    setCarMoveReverse();
                 }, null);
             });
 
@@ -159,7 +162,8 @@ namespace ProjectSystem
                 Thread.CurrentThread.IsBackground = true;
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
-                    setCarMove();
+                    //setCarMove();
+                    setCarMoveReverse();
                 }, null);
             });
 
@@ -167,7 +171,7 @@ namespace ProjectSystem
             //setCarMove();
             rnd = new Random();
             trainthr.Start();
-            //Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 9)));
+            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 9)));
             carthr.Start();
 
             Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
@@ -175,7 +179,6 @@ namespace ProjectSystem
 
             Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
             carthr3.Start();
-            //trainwait.Start();
         }
 
         private async void TrainRestart(object sender, EventArgs e)
@@ -226,13 +229,144 @@ namespace ProjectSystem
         {
             rnd = new Random();
             trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
-            
+
             train_storyboard.Completed += new EventHandler(TrainRestart);
 
             train_storyboard.Begin();
             szlaban1.Fill = szlaban_closed;
-            szlaban2.Fill =szlaban_closed;
+            szlaban2.Fill = szlaban_closed;
         }
+
+        private int[] animXBef = new int[7];
+        private int[] animXTo = new int[7];
+        private int[] animYBef = new int[7];
+        private int[] animYTo = new int[7];
+
+        private void setTab()
+        {
+            animXBef[0] = 900;
+            animXTo[0] = 250;
+            animYBef[0] = 125;
+            animYTo[0] = 125;
+
+            animXBef[1] = animXTo[0];
+            animXTo[1] = 110;
+            animYBef[1] = animYTo[0];
+            animYTo[1] = -25;
+
+            animXBef[2] = animXTo[1];
+            animXTo[2] = 230;
+            animYBef[2] = animYTo[1];
+            animYTo[2] = -90;
+
+            animXBef[3] = animXTo[2];
+            animXTo[3] = 850;
+            animYBef[3] = animYTo[2];
+            animYTo[3] = -90;
+            
+            animXBef[4] = animXTo[3];
+            animXTo[4] = 1000;
+            animYBef[4] = animYTo[3];
+            animYTo[4] = -250;
+
+            animXBef[5] = animXTo[4];
+            animXTo[5] = 900;
+            animYBef[5] = animYTo[4];
+            animYTo[5] = -400;
+
+            animXBef[6] = animXTo[5];
+            animXTo[6] = -78;
+            animYBef[6] = animYTo[5];
+            animYTo[6] = -400;
+        }
+
+        private void setCarMoveReverse()
+        {
+            Random rnd = new Random();
+
+            number++;
+
+            if (number == 0)
+            {
+                rnd_1 = 8;
+                carrnd = 1;
+            }
+            else if (number == 1)
+            {
+                rnd_1 = 4;
+                carrnd = 2;
+            }
+            else if (number == 2)
+            {
+                rnd_1 = 1;
+                carrnd = 3;
+            }
+
+            int dex = rnd.Next(3, 5);
+
+            int index = 0;
+            Control.Content = index;
+            Rectangle autko = TakeTheCar(carrnd);
+            autko.Name = "auto" + number;
+            Storyboard story = new Storyboard();
+            DoubleAnimation animMove_x = new DoubleAnimation();
+            DoubleAnimation animMove_y = new DoubleAnimation();
+                //animMove_1_x
+                animMove_x.From = animXBef[index];
+                animMove_x.To = animXTo[index];
+                //distance_x = 900 - 800;
+                //animMove_1_y
+                animMove_y.From = animYBef[index];
+                animMove_y.To = animYTo[index];
+                animMove_x.Duration = new Duration(TimeSpan.FromSeconds(dex));
+                animMove_y.Duration = new Duration(TimeSpan.FromSeconds(dex));
+                //animMove_1_x
+                Storyboard.SetTarget(animMove_x, autko);
+                Storyboard.SetTargetProperty(animMove_x, new PropertyPath(Canvas.LeftProperty));
+                story.Children.Add(animMove_x);
+                //animMove_1_y
+                Storyboard.SetTarget(animMove_y, autko);
+                Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
+                story.Children.Add(animMove_y);
+                ////
+            canvas_2.Children.Add(autko);
+            Canvas.SetTop(autko, 125);
+            //index++;
+            story.Completed += new EventHandler(MoveReverse);
+            story.Begin();
+
+            void MoveReverse(object sender, EventArgs e)
+            {
+                if (index < 6)
+                {
+                    index++;
+                    //animMove_1_x
+                    animMove_x.From = animXBef[index];
+                    animMove_x.To = animXTo[index];
+                    //distance_x = 900 - 800;
+                    //animMove_1_y
+                    animMove_y.From = animYBef[index];
+                    animMove_y.To = animYTo[index];
+                    //animMove_1_x
+                    Storyboard.SetTarget(animMove_x, autko);
+                    Storyboard.SetTargetProperty(animMove_x, new PropertyPath(Canvas.LeftProperty));
+                    story.Children.Add(animMove_x);
+                    //animMove_1_y
+                    Storyboard.SetTarget(animMove_y, autko);
+                    Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
+                    story.Children.Add(animMove_y);
+                    ////
+                    story.Begin();
+                }
+                else
+                {
+                    canvas_2.Children.Remove(autko);
+                    story.Remove();
+                    return;
+                }
+            }
+        }
+
         private void setCarMove()
         {
             rnd = new Random();
