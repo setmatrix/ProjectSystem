@@ -106,7 +106,7 @@ namespace ProjectSystem
             {
                 ImageSource = new BitmapImage(new Uri("Images/YellowCar.png", UriKind.Relative))
             };
-            setTab();
+            setTabReverse();
             Storyboard.SetTarget(trainMove, train);
             Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
             trainMove.From = 1280 + train.Width;
@@ -143,7 +143,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMoveReverse();
+                    setCarMove(animXBef, animXTo, animYBef, animYTo);
                 }, null);
             });
 
@@ -153,7 +153,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMoveReverse();
+                    setCarMove(animXBef, animXTo, animYBef, animYTo);
                 }, null);
             });
 
@@ -163,7 +163,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMoveReverse();
+                    setCarMove(animXBef, animXTo, animYBef, animYTo);
                 }, null);
             });
 
@@ -242,7 +242,7 @@ namespace ProjectSystem
         private int[] animYBef = new int[7];
         private int[] animYTo = new int[7];
 
-        private void setTab()
+        private void setTabReverse()
         {
             animXBef[0] = 900;
             animXTo[0] = 250;
@@ -280,7 +280,7 @@ namespace ProjectSystem
             animYTo[6] = -400;
         }
 
-        private void setCarMoveReverse()
+        private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto)
         {
             Random rnd = new Random();
 
@@ -341,12 +341,12 @@ namespace ProjectSystem
                 {
                     index++;
                     //animMove_1_x
-                    animMove_x.From = animXBef[index];
-                    animMove_x.To = animXTo[index];
+                    animMove_x.From = animxbef[index];
+                    animMove_x.To = animxto[index];
                     //distance_x = 900 - 800;
                     //animMove_1_y
-                    animMove_y.From = animYBef[index];
-                    animMove_y.To = animYTo[index];
+                    animMove_y.From = animybef[index];
+                    animMove_y.To = animyto[index];
                     //animMove_1_x
                     Storyboard.SetTarget(animMove_x, autko);
                     Storyboard.SetTargetProperty(animMove_x, new PropertyPath(Canvas.LeftProperty));
