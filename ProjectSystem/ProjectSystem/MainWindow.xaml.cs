@@ -143,7 +143,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo);
+                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
                 }, null);
             });
 
@@ -153,7 +153,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo);
+                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
                 }, null);
             });
 
@@ -163,7 +163,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo);
+                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
                 }, null);
             });
 
@@ -280,7 +280,7 @@ namespace ProjectSystem
             animYTo[6] = -400;
         }
 
-        private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto)
+        private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto, Canvas can)
         {
             Random rnd = new Random();
 
@@ -329,7 +329,7 @@ namespace ProjectSystem
                 Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
                 story.Children.Add(animMove_y);
                 ////
-            canvas_2.Children.Add(autko);
+            can.Children.Add(autko);
             Canvas.SetTop(autko, 125);
             Canvas.SetLeft(autko, 78);
             //index++;
