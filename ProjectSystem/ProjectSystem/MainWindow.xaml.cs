@@ -106,7 +106,7 @@ namespace ProjectSystem
             {
                 ImageSource = new BitmapImage(new Uri("Images/YellowCar.png", UriKind.Relative))
             };
-            setTab();
+            setTabReverse();
             Storyboard.SetTarget(trainMove, train);
             Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
             trainMove.From = 1280 + train.Width;
@@ -143,7 +143,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMoveReverse();
+                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
                 }, null);
             });
 
@@ -153,7 +153,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMoveReverse();
+                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
                 }, null);
             });
 
@@ -163,7 +163,7 @@ namespace ProjectSystem
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
                     //setCarMove();
-                    setCarMoveReverse();
+                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
                 }, null);
             });
 
@@ -242,22 +242,22 @@ namespace ProjectSystem
         private int[] animYBef = new int[7];
         private int[] animYTo = new int[7];
 
-        private void setTab()
+        private void setTabReverse()
         {
-            animXBef[0] = 900;
-            animXTo[0] = 250;
-            animYBef[0] = 125;
-            animYTo[0] = 125;
+            animXBef[0] = 1200;
+            animXTo[0] = 240;
+            animYBef[0] = 110;
+            animYTo[0] = 110;
 
             animXBef[1] = animXTo[0];
-            animXTo[1] = 110;
+            animXTo[1] = 150;
             animYBef[1] = animYTo[0];
             animYTo[1] = -25;
 
             animXBef[2] = animXTo[1];
             animXTo[2] = 230;
             animYBef[2] = animYTo[1];
-            animYTo[2] = -90;
+            animYTo[2] = -100;
 
             animXBef[3] = animXTo[2];
             animXTo[3] = 850;
@@ -267,12 +267,12 @@ namespace ProjectSystem
             animXBef[4] = animXTo[3];
             animXTo[4] = 1000;
             animYBef[4] = animYTo[3];
-            animYTo[4] = -250;
+            animYTo[4] = -260;
 
             animXBef[5] = animXTo[4];
             animXTo[5] = 900;
             animYBef[5] = animYTo[4];
-            animYTo[5] = -400;
+            animYTo[5] = -420;
 
             animXBef[6] = animXTo[5];
             animXTo[6] = -78;
@@ -280,7 +280,7 @@ namespace ProjectSystem
             animYTo[6] = -400;
         }
 
-        private void setCarMoveReverse()
+        private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto, Canvas can)
         {
             Random rnd = new Random();
 
@@ -329,8 +329,9 @@ namespace ProjectSystem
                 Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
                 story.Children.Add(animMove_y);
                 ////
-            canvas_2.Children.Add(autko);
+            can.Children.Add(autko);
             Canvas.SetTop(autko, 125);
+            Canvas.SetLeft(autko, 78);
             //index++;
             story.Completed += new EventHandler(MoveReverse);
             story.Begin();
@@ -340,13 +341,14 @@ namespace ProjectSystem
                 if (index < 6)
                 {
                     index++;
+                    Control.Content = index;
                     //animMove_1_x
-                    animMove_x.From = animXBef[index];
-                    animMove_x.To = animXTo[index];
+                    animMove_x.From = animxbef[index];
+                    animMove_x.To = animxto[index];
                     //distance_x = 900 - 800;
                     //animMove_1_y
-                    animMove_y.From = animYBef[index];
-                    animMove_y.To = animYTo[index];
+                    animMove_y.From = animybef[index];
+                    animMove_y.To = animyto[index];
                     //animMove_1_x
                     Storyboard.SetTarget(animMove_x, autko);
                     Storyboard.SetTargetProperty(animMove_x, new PropertyPath(Canvas.LeftProperty));
