@@ -8,19 +8,19 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\m_war\\.nuget\\packages\\": {}
+    "C:\\Users\\zwari\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
+      "projectUniqueName": "C:\\Users\\zwari\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
       "projectName": "ProjectSystem",
-      "projectPath": "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
-      "packagesPath": "C:\\Users\\m_war\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\m_war\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\obj\\",
+      "projectPath": "C:\\Users\\zwari\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\ProjectSystem.csproj",
+      "packagesPath": "C:\\Users\\zwari\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\zwari\\source\\repos\\setmatrix\\ProjectSystem\\ProjectSystem\\ProjectSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\m_war\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zwari\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
