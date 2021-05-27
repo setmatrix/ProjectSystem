@@ -355,16 +355,11 @@ namespace ProjectSystem
         private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto, Canvas can)
         {
             Random rnd = new Random();
-
             number++;
-
-
             carrnd = number+1;
-
             int dex = rnd.Next(3, 7);
-
             int index = 0;
-            Control.Content = index;
+           // Control.Content = index;
             Rectangle autko = TakeTheCar(carrnd);
             autko.Name = "auto" + number;
             list_speed2.Add(dex);
@@ -433,7 +428,7 @@ namespace ProjectSystem
                 {
                     index++;
                     story.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
-                    Control.Content = index;
+                   // Control.Content = index;
                     //animMove_1_x
                     animMove_x.From = animxbef[index];
                     animMove_x.To = animxto[index];
@@ -450,7 +445,9 @@ namespace ProjectSystem
                     Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
                     story.Children.Add(animMove_y);
                     ////
-
+                    double distance_y = (double)Math.Abs((int)(animMove_y.To - animMove_y.From));
+                    double distance_x = (double)Math.Abs((int)(animMove_x.To - animMove_x.From));
+                    double distance = Math.Sqrt(distance_x * distance_x + distance_y * distance_y);
 
                     //Zmiana prędkości na zakrętach
                     //Narazie na oko, poźniej można dokładnie wyznaczyć
@@ -458,28 +455,29 @@ namespace ProjectSystem
                     {
                         case 1:
                         
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
                         case 2:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 6));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 6));
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                            
                             break;
                         case 3:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 1.5));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 1.5));
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
                         case 4:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 3.5));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 3.5));
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
                         case 5:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4));
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
                         case 6:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 1.2));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 1.2));
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
                     }
                     
