@@ -35,7 +35,6 @@ namespace ProjectSystem
         public List<int> list_speed2 = new List<int>();
         private int number = -1;
         private ScaleTransform trainrot = new ScaleTransform();
-        private int carsquantity = 0;
 
         private bool train_isMoving = false;
 
@@ -102,7 +101,7 @@ namespace ProjectSystem
                     setTrainMove();
                 }, null);
             });
-            Thread carthr = new Thread(() =>
+            Thread res= new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
@@ -113,27 +112,23 @@ namespace ProjectSystem
             rnd = new Random();
             trainthr.Start();
             Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 2)));
-            carthr.Start();
+            res.Start();
         }
 
         private async void RespawnCars()
         {
-            while(true)
+            while (true)
             {
-                if(carsquantity < 10)
+                Thread car = new Thread(() =>
                 {
-                    Thread carthr = new Thread(() =>
+                    Thread.CurrentThread.IsBackground = true;
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                     {
-                        Thread.CurrentThread.IsBackground = true;
-                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
-                        {
-                            setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
-                        }, null);
-                    });
-                    carthr.Start();
-                    carsquantity++;
-                }
-                await Task.Delay(rnd.Next(1000, 3000));
+                        setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
+                    }, null);
+                });
+                car.Start();
+                await Task.Delay(rnd.Next(3000, 4000));
             }
         }
 
@@ -141,7 +136,7 @@ namespace ProjectSystem
         {
             rnd = new Random();
             int kier = 0;
-            trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
+            trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 7)));
 
             train_storyboard.Completed += new EventHandler(TrainRestart);
 
@@ -229,11 +224,10 @@ namespace ProjectSystem
         private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto, Canvas can)
         {
             Random rnd = new Random();
-            number++;
+            number+=1;
 
             int dex = rnd.Next(3, 7);
             int index = 0;
-            Control.Content = index;
 
             Rectangle autko = new Rectangle()
             {
@@ -296,7 +290,6 @@ namespace ProjectSystem
             story.Completed += new EventHandler(MoveReverse);
             story.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
             story.Begin();
-
             void MainTimerEvent(object sender, EventArgs e)
             {
                 foreach (var x in can.Children.OfType<Rectangle>())
@@ -321,13 +314,11 @@ namespace ProjectSystem
                     }
                 }
             }
-            
-
             async void MoveReverse(object sender, EventArgs e)
             {
                 if (index < 6)
                 {
-                    index++;
+                    index +=1;
                     story.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
                    // Control.Content = index;
                     //animMove_1_x
@@ -394,7 +385,6 @@ namespace ProjectSystem
                 {
                     canvas_2.Children.Remove(autko);
                     story.Remove();
-                    carsquantity--;
                     return;
                 }
             }
