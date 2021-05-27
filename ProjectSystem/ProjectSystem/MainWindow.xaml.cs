@@ -30,20 +30,14 @@ namespace ProjectSystem
         private ImageBrush szlaban_closed;
         private Storyboard train_storyboard = new Storyboard();
         private Rectangle train;
-        private Rectangle BlueCar;
-        private Rectangle BlueCar2;
-        private Rectangle YellowCar;
-        private Rectangle YellowCar2;
-        private Rectangle RedCar;
-        private Rectangle RedCar2;
         private DoubleAnimation trainMove = new DoubleAnimation();
         public List<double> list_speed = new List<double>();
         public List<int> list_speed2 = new List<int>();
-        private int dex;
-        private int carrnd;
         private int number = -1;
         private ScaleTransform trainrot = new ScaleTransform();
-        private int kier = 0;
+        private int carsquantity = 0;
+
+        private bool train_isMoving = false;
 
         Rect auto1HitBox = new Rect();
         Rect auto2HitBox = new Rect();
@@ -85,60 +79,6 @@ namespace ProjectSystem
             {
                 ImageSource = new BitmapImage(new Uri("Images/train.png", UriKind.Relative))
             };
-            BlueCar = new Rectangle()
-            {
-                Width = 78,
-                Height = 50
-            };
-            BlueCar.Fill = new ImageBrush
-            {
-                ImageSource = new BitmapImage(new Uri("Images/BlueCar.png", UriKind.Relative))
-            };
-            BlueCar2 = new Rectangle()
-            {
-                Width = 78,
-                Height = 50
-            };
-            BlueCar2.Fill = new ImageBrush
-            {
-                ImageSource = new BitmapImage(new Uri("Images/BlueCar2.png", UriKind.Relative))
-            };
-            RedCar = new Rectangle()
-            {
-                Width = 78,
-                Height = 50
-            };
-            RedCar.Fill = new ImageBrush
-            {
-                ImageSource = new BitmapImage(new Uri("Images/RedCar.png", UriKind.Relative))
-            };
-            RedCar2 = new Rectangle()
-            {
-                Width = 78,
-                Height = 50
-            };
-            RedCar2.Fill = new ImageBrush
-            {
-                ImageSource = new BitmapImage(new Uri("Images/RedCar2.png", UriKind.Relative))
-            };
-            YellowCar = new Rectangle()
-            {
-                Width = 78,
-                Height = 50
-            };
-            YellowCar.Fill = new ImageBrush
-            {
-                ImageSource = new BitmapImage(new Uri("Images/YellowCar.png", UriKind.Relative))
-            };
-            YellowCar2 = new Rectangle()
-            {
-                Width = 78,
-                Height = 50
-            };
-            YellowCar2.Fill = new ImageBrush
-            {
-                ImageSource = new BitmapImage(new Uri("Images/YellowCar2.png", UriKind.Relative))
-            };
             setTabReverse();
             Storyboard.SetTarget(trainMove, train);
             Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
@@ -162,151 +102,85 @@ namespace ProjectSystem
                     setTrainMove();
                 }, null);
             });
-            //Thread trainwait = new Thread(() =>
-            //{
-            //    Thread.CurrentThread.IsBackground = true;
-            //    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
-            //    {
-            //        TrainRestart();
-            //    }, null);
-            //});
             Thread carthr = new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                 {
-                    //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
+                    RespawnCars();
                 }, null);
             });
-
-            Thread carthr2 = new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
-                {
-                    //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
-                }, null);
-            });
-
-            Thread carthr3 = new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
-                {
-                    //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
-                }, null);
-            });
-            Thread carthr4 = new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
-                {
-                    //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
-                }, null);
-            });
-            Thread carthr5 = new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
-                {
-                    //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
-                }, null);
-            });
-            Thread carthr6 = new Thread(() =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
-                {
-                    //setCarMove();
-                    setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
-                }, null);
-            });
-
-            //setTrainMove();
-            //setCarMove();
             rnd = new Random();
             trainthr.Start();
-            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 9)));
+            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 2)));
             carthr.Start();
-
-            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
-            carthr2.Start();
-
-            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
-            carthr3.Start();
-            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
-            carthr4.Start();
-            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
-            carthr5.Start();
-            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(3, 4)));
-            carthr6.Start();
         }
 
-        private async void TrainRestart(object sender, EventArgs e)
+        private async void RespawnCars()
         {
-            szlaban1.Fill = szlaban_open;
-            szlaban2.Fill = szlaban_open;
-            rnd = new Random();
-            await Task.Delay(rnd.Next(2000, 10000));
-            train_storyboard.Stop();
-            rnd = new Random();
-            trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
-            kier = rnd.Next(1, 3);
-            if(kier == 1)
+            while(true)
             {
-                trainrot.ScaleX = -1;
-                train.RenderTransform = trainrot;
-                trainMove.From = 0 - train.Width;
-                trainMove.To = 1280 + train.Width;
+                if(carsquantity < 10)
+                {
+                    Thread carthr = new Thread(() =>
+                    {
+                        Thread.CurrentThread.IsBackground = true;
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                        {
+                            setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
+                        }, null);
+                    });
+                    carthr.Start();
+                    carsquantity++;
+                }
+                await Task.Delay(rnd.Next(1000, 3000));
             }
-            else if(kier == 2)
-            {
-                trainrot.ScaleX = 1;
-                train.RenderTransform = trainrot;
-                trainMove.From = 1280 + train.Width;
-                trainMove.To = 0 - train.Width;
-            }
-            
-            train_storyboard.Begin();
-            szlaban1.Fill = szlaban_closed;
-            szlaban2.Fill = szlaban_closed;
-        }
-
-        private Rectangle TakeTheCar(int ch)
-        {
-            switch(ch)
-            {
-                case 1:
-                    return BlueCar;
-                case 2:
-                    return YellowCar;
-                case 3:
-                    return RedCar;
-                case 4:
-                    return BlueCar2;
-                case 5:
-                    return YellowCar2;
-                case 6:
-                    return RedCar2;
-            }
-            return BlueCar;
         }
 
         private void setTrainMove()
         {
             rnd = new Random();
+            int kier = 0;
             trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
 
             train_storyboard.Completed += new EventHandler(TrainRestart);
 
             train_storyboard.Begin();
+            train_isMoving = true;
             szlaban1.Fill = szlaban_closed;
             szlaban2.Fill = szlaban_closed;
+
+            async void TrainRestart(object sender, EventArgs e)
+            {
+                szlaban1.Fill = szlaban_open;
+                szlaban2.Fill = szlaban_open;
+                train_isMoving = false;
+                rnd = new Random();
+                await Task.Delay(rnd.Next(2000, 10000));
+                train_storyboard.Stop();
+                rnd = new Random();
+                trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
+                kier = rnd.Next(1, 3);
+                if (kier == 1)
+                {
+                    trainrot.ScaleX = -1;
+                    train.RenderTransform = trainrot;
+                    trainMove.From = 0 - train.Width;
+                    trainMove.To = 1280 + train.Width;
+                }
+                else if (kier == 2)
+                {
+                    trainrot.ScaleX = 1;
+                    train.RenderTransform = trainrot;
+                    trainMove.From = 1280 + train.Width;
+                    trainMove.To = 0 - train.Width;
+                }
+
+                train_storyboard.Begin();
+                train_isMoving = true;
+                szlaban1.Fill = szlaban_closed;
+                szlaban2.Fill = szlaban_closed;
+            }
         }
 
         private int[] animXBef = new int[7];
@@ -356,11 +230,38 @@ namespace ProjectSystem
         {
             Random rnd = new Random();
             number++;
-            carrnd = number+1;
+
             int dex = rnd.Next(3, 7);
             int index = 0;
-           // Control.Content = index;
-            Rectangle autko = TakeTheCar(carrnd);
+            Control.Content = index;
+
+            Rectangle autko = new Rectangle()
+            {
+                Width = 78,
+                Height = 50
+            };
+            rnd = new Random();
+            switch(rnd.Next(0,3))
+            {
+                case 0:
+                    autko.Fill = new ImageBrush
+                    {
+                        ImageSource = new BitmapImage(new Uri("Images/BlueCar.png", UriKind.Relative))
+                    };
+                    break;
+                case 1:
+                    autko.Fill = new ImageBrush
+                    {
+                        ImageSource = new BitmapImage(new Uri("Images/RedCar.png", UriKind.Relative))
+                    };
+                    break;
+                case 2:
+                    autko.Fill = new ImageBrush
+                    {
+                        ImageSource = new BitmapImage(new Uri("Images/YellowCar.png", UriKind.Relative))
+                    };
+                    break;
+            }
             autko.Name = "auto" + number;
             list_speed2.Add(dex);
             Storyboard story = new Storyboard();
@@ -422,7 +323,7 @@ namespace ProjectSystem
             }
             
 
-            void MoveReverse(object sender, EventArgs e)
+            async void MoveReverse(object sender, EventArgs e)
             {
                 if (index < 6)
                 {
@@ -454,7 +355,14 @@ namespace ProjectSystem
                     switch (index)
                     {
                         case 1:
-                        
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
+                            while (train_isMoving)
+                            {
+                                story.Pause();
+                                await Task.Delay(25);
+                            }
+                            story.Resume();
                             animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
@@ -480,14 +388,13 @@ namespace ProjectSystem
                             animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
                     }
-                    
-                    
                     story.Begin();
                 }
                 else
                 {
                     canvas_2.Children.Remove(autko);
                     story.Remove();
+                    carsquantity--;
                     return;
                 }
             }
