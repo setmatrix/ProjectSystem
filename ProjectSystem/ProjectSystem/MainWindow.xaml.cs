@@ -78,7 +78,7 @@ namespace ProjectSystem
             {
                 ImageSource = new BitmapImage(new Uri("Images/train.png", UriKind.Relative))
             };
-            setTabReverse();
+            setTabs();
             Storyboard.SetTarget(trainMove, train);
             Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
             trainMove.From = 1280 + train.Width;
@@ -113,6 +113,15 @@ namespace ProjectSystem
             trainthr.Start();
             Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 2)));
             res.Start();
+            Thread resrev = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                {
+                    RespawnCarsRev();
+                }, null);
+            });
+            resrev.Start();
         }
 
         private async void RespawnCars()
@@ -124,7 +133,23 @@ namespace ProjectSystem
                     Thread.CurrentThread.IsBackground = true;
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
                     {
-                        setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_2);
+                        setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_1, 5);
+                    }, null);
+                });
+                car.Start();
+                await Task.Delay(rnd.Next(3000, 4000));
+            }
+        }
+        private async void RespawnCarsRev()
+        {
+            while (true)
+            {
+                Thread car = new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                    {
+                        setCarMove(animXBefRev, animXToRev, animYBefRev, animYToRev, canvas_2, 1);
                     }, null);
                 });
                 car.Start();
@@ -183,45 +208,85 @@ namespace ProjectSystem
         private int[] animYBef = new int[7];
         private int[] animYTo = new int[7];
 
-        private void setTabReverse()
+        private int[] animXBefRev = new int[7];
+        private int[] animXToRev = new int[7];
+        private int[] animYBefRev = new int[7];
+        private int[] animYToRev = new int[7];
+
+        private void setTabs()
         {
-            animXBef[0] = 1200;
-            animXTo[0] = 240;
-            animYBef[0] = 110;
-            animYTo[0] = 110;
+            animXBef[0] = -78;
+            animXTo[0] = 850;
+            animYBef[0] = 120;
+            animYTo[0] = 120;
 
             animXBef[1] = animXTo[0];
-            animXTo[1] = 150;
+            animXTo[1] = 935;
             animYBef[1] = animYTo[0];
-            animYTo[1] = -25;
+            animYTo[1] = 230;
 
             animXBef[2] = animXTo[1];
-            animXTo[2] = 230;
+            animXTo[2] = 840;
             animYBef[2] = animYTo[1];
-            animYTo[2] = -100;
+            animYTo[2] = 340;
 
             animXBef[3] = animXTo[2];
-            animXTo[3] = 850;
+            animXTo[3] = 170;
             animYBef[3] = animYTo[2];
-            animYTo[3] = -90;
-            
+            animYTo[3] = 350;
+
             animXBef[4] = animXTo[3];
-            animXTo[4] = 1000;
+            animXTo[4] = 80;
             animYBef[4] = animYTo[3];
-            animYTo[4] = -260;
+            animYTo[4] = 470;
 
             animXBef[5] = animXTo[4];
-            animXTo[5] = 900;
+            animXTo[5] = 160;
             animYBef[5] = animYTo[4];
-            animYTo[5] = -420;
+            animYTo[5] = 660;
 
             animXBef[6] = animXTo[5];
-            animXTo[6] = -78;
+            animXTo[6] = 1358;
             animYBef[6] = animYTo[5];
-            animYTo[6] = -400;
+            animYTo[6] = 660;
+
+            animXBefRev[0] = 1200;
+            animXToRev[0] = 240;
+            animYBefRev[0] = 110;
+            animYToRev[0] = 110;
+
+            animXBefRev[1] = animXToRev[0];
+            animXToRev[1] = 150;
+            animYBefRev[1] = animYToRev[0];
+            animYToRev[1] = -25;
+
+            animXBefRev[2] = animXToRev[1];
+            animXToRev[2] = 230;
+            animYBefRev[2] = animYToRev[1];
+            animYToRev[2] = -100;
+
+            animXBefRev[3] = animXToRev[2];
+            animXToRev[3] = 850;
+            animYBefRev[3] = animYToRev[2];
+            animYToRev[3] = -90;
+
+            animXBefRev[4] = animXToRev[3];
+            animXToRev[4] = 1000;
+            animYBefRev[4] = animYToRev[3];
+            animYToRev[4] = -260;
+
+            animXBefRev[5] = animXToRev[4];
+            animXToRev[5] = 900;
+            animYBefRev[5] = animYToRev[4];
+            animYToRev[5] = -420;
+
+            animXBefRev[6] = animXToRev[5];
+            animXToRev[6] = -78;
+            animYBefRev[6] = animYToRev[5];
+            animYToRev[6] = -400;
         }
 
-        private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto, Canvas can)
+        private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto, Canvas can, int direction)
         {
             Random rnd = new Random();
             number+=1;
@@ -262,12 +327,12 @@ namespace ProjectSystem
             DoubleAnimation animMove_x = new DoubleAnimation();
             DoubleAnimation animMove_y = new DoubleAnimation();
                 //animMove_1_x
-                animMove_x.From = animXBef[index];
-                animMove_x.To = animXTo[index];
+                animMove_x.From = animxbef[index];
+                animMove_x.To = animxto[index];
                 //distance_x = 900 - 800;
                 //animMove_1_y
-                animMove_y.From = animYBef[index];
-                animMove_y.To = animYTo[index];
+                animMove_y.From = animybef[index];
+                animMove_y.To = animyto[index];
                 animMove_x.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[number]));
                 animMove_y.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[number]));
                 //animMove_1_x
@@ -279,7 +344,7 @@ namespace ProjectSystem
                 Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
                 story.Children.Add(animMove_y);
             ////
-            double reverse_velocity = (double)dex / Math.Abs((animXTo[index]- animXBef[index])) ;
+            double reverse_velocity = (double)dex / Math.Abs((animxto[index]- animxbef[index])) ;
             can.Children.Add(autko);
             //list_speed.Add(dex/(animXBef[index]-animXTo[index]));
             list_speed.Add(reverse_velocity);
@@ -348,11 +413,6 @@ namespace ProjectSystem
                         case 1:
                             animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
                             animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
-                            while (train_isMoving)
-                            {
-                                story.Pause();
-                                await Task.Delay(25);
-                            }
                             story.Resume();
                             animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
@@ -378,6 +438,14 @@ namespace ProjectSystem
                             animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                             break;
+                    }
+                    if (index == direction)
+                    {
+                        while (train_isMoving)
+                        {
+                            story.Pause();
+                            await Task.Delay(25);
+                        }
                     }
                     story.Begin();
                 }
