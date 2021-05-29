@@ -109,10 +109,6 @@ namespace ProjectSystem
                     RespawnCars();
                 }, null);
             });
-            rnd = new Random();
-            trainthr.Start();
-            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 2)));
-            res.Start();
             Thread resrev = new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
@@ -121,6 +117,11 @@ namespace ProjectSystem
                     RespawnCarsRev();
                 }, null);
             });
+            rnd = new Random();
+            trainthr.Start();
+            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 2)));
+            res.Start();
+            Thread.Sleep(TimeSpan.FromSeconds(rnd.Next(1, 2)));
             resrev.Start();
         }
 
@@ -144,7 +145,7 @@ namespace ProjectSystem
         {
             while (true)
             {
-                Thread car = new Thread(() =>
+                Thread carrev = new Thread(() =>
                 {
                     Thread.CurrentThread.IsBackground = true;
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
@@ -152,7 +153,7 @@ namespace ProjectSystem
                         setCarMove(animXBefRev, animXToRev, animYBefRev, animYToRev, canvas_2, 1);
                     }, null);
                 });
-                car.Start();
+                carrev.Start();
                 await Task.Delay(rnd.Next(3000, 4000));
             }
         }
