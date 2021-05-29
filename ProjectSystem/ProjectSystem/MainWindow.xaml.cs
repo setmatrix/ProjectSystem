@@ -40,11 +40,41 @@ namespace ProjectSystem
 
         Rect auto1HitBox = new Rect();
         Rect auto2HitBox = new Rect();
+
         public MainWindow()
         {
             ImageBrush brush = new ImageBrush(new BitmapImage(new Uri("Images/mapa_v5.png", UriKind.Relative)));
             Background = brush;
             InitializeComponent();
+            szlaban_init();
+            train_init();
+            setTabs();
+            Thread thr = new Thread(Threads);
+            thr.Start();
+        }
+
+        private void train_init()
+        {
+            train = new Rectangle()
+            {
+                Width = 600,
+                Height = 420
+            };
+            train.Fill = new ImageBrush
+            {
+                ImageSource = new BitmapImage(new Uri("Images/train.png", UriKind.Relative))
+            };
+            Storyboard.SetTarget(trainMove, train);
+            Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
+            trainMove.From = 1280 + train.Width;
+            trainMove.To = 0 - train.Width;
+            train_storyboard.Children.Add(trainMove);
+            train_canvas.Children.Add(train);
+            Canvas.SetRight(train, 0);
+        }
+
+        private void szlaban_init()
+        {
             szlaban_open = new ImageBrush(new BitmapImage(new Uri("Images/szlaban_open.png", UriKind.Relative)));
             szlaban_closed = new ImageBrush(new BitmapImage(new Uri("Images/szlaban_closed.png", UriKind.Relative)));
             szlaban1 = new Rectangle()
@@ -69,26 +99,6 @@ namespace ProjectSystem
             train_canvas.Children.Add(szlaban2);
             Canvas.SetLeft(szlaban2, 170);
             Canvas.SetBottom(szlaban2, -50);
-            train = new Rectangle()
-            {
-                Width = 600,
-                Height = 420
-            };
-            train.Fill = new ImageBrush
-            {
-                ImageSource = new BitmapImage(new Uri("Images/train.png", UriKind.Relative))
-            };
-            setTabs();
-            Storyboard.SetTarget(trainMove, train);
-            Storyboard.SetTargetProperty(trainMove, new PropertyPath(Canvas.LeftProperty));
-            trainMove.From = 1280 + train.Width;
-            trainMove.To = 0 - train.Width;
-            train_storyboard.Children.Add(trainMove);
-            train_canvas.Children.Add(train);
-            Canvas.SetRight(train, 0);
-
-            Thread thr = new Thread(Threads);
-            thr.Start();
         }
 
         private void Threads()
