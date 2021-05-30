@@ -151,6 +151,7 @@ namespace ProjectSystem
                 await Task.Delay(rnd.Next(3000, 4000));
             }
         }
+
         private async void RespawnCarsRev()
         {
             while (true)
@@ -419,37 +420,8 @@ namespace ProjectSystem
 
                     //Zmiana prędkości na zakrętach
                     //Narazie na oko, poźniej można dokładnie wyznaczyć
-                    switch (index)
-                    {
-                        case 1:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] / 4.5));
-                            story.Resume();
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            break;
-                        case 2:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            
-                            break;
-                        case 3:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            break;
-                        case 4:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            break;
-                        case 5:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            break;
-                        case 6:
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
-                            break;
-                    }
+                    animMove_x.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
+                    animMove_y.Duration = new Duration(TimeSpan.FromSeconds((double)list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] * distance));
                     if (index == direction)
                     {
                         while (train_isMoving)
