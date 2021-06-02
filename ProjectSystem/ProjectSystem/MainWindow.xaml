@@ -20,7 +20,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Name="Control" Grid.Row="0" Grid.Column="1" Content="Text" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="100"/>
         <Canvas Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Name="train_canvas"/>
         <Canvas Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Name="canvas_1"/>
         <Canvas Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Name="canvas_2"/>

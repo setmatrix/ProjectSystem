@@ -71,6 +71,7 @@ namespace ProjectSystem
             train_storyboard.Children.Add(trainMove);
             train_canvas.Children.Add(train);
             Canvas.SetRight(train, 0);
+            Canvas.SetZIndex(train, 100);
         }
 
         private void szlaban_init()
@@ -99,6 +100,7 @@ namespace ProjectSystem
             train_canvas.Children.Add(szlaban2);
             Canvas.SetLeft(szlaban2, 170);
             Canvas.SetBottom(szlaban2, -50);
+            Canvas.SetZIndex(szlaban2, 50);
         }
 
         private void Threads()
@@ -303,7 +305,7 @@ namespace ProjectSystem
             Random rnd = new Random();
             number+=1;
 
-            int dex = rnd.Next(3, 7);
+            int dex = rnd.Next(6, 9);
             int index = 0;
 
             Rectangle autko = new Rectangle()
@@ -386,7 +388,7 @@ namespace ProjectSystem
 
                         story.SetSpeedRatio((double)(pomocnicza / pomocnicza2));
 
-                        autko.Name = x.Name;                   
+                        autko.Name = x.Name;              
 
                     }
                 }
