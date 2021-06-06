@@ -24,19 +24,36 @@ namespace ProjectSystem
     public partial class MainWindow : Window
     {
         private Random rnd;
+
         private Rectangle szlaban1;
         private Rectangle szlaban2;
+        private Rectangle swiatla1;
+        private Rectangle swiatla2;
+
         private ImageBrush szlaban_open;
         private ImageBrush szlaban_closed;
+        private ImageBrush szlaban_off;
+        private ImageBrush szlaban_on1;
+        private ImageBrush szlaban_on2;
+
         private Storyboard train_storyboard = new Storyboard();
+
         private Rectangle train;
+
         private DoubleAnimation trainMove = new DoubleAnimation();
+
         public List<double> list_speed = new List<double>();
         public List<int> list_speed2 = new List<int>();
+
+        private int leftrightlight = 0;
+
         private int number = -1;
+
         private ScaleTransform trainrot = new ScaleTransform();
 
         private bool train_isMoving = false;
+
+        private DispatcherTimer timer;
 
         Rect auto1HitBox = new Rect();
         Rect auto2HitBox = new Rect();
@@ -78,29 +95,92 @@ namespace ProjectSystem
         {
             szlaban_open = new ImageBrush(new BitmapImage(new Uri("Images/szlaban_open.png", UriKind.Relative)));
             szlaban_closed = new ImageBrush(new BitmapImage(new Uri("Images/szlaban_closed.png", UriKind.Relative)));
+            szlaban_off = new ImageBrush(new BitmapImage(new Uri("Images/swiatla_off.png", UriKind.Relative)));
+            szlaban_on1 = new ImageBrush(new BitmapImage(new Uri("Images/swiatla_on1.png", UriKind.Relative)));
+            szlaban_on2 = new ImageBrush(new BitmapImage(new Uri("Images/swiatla_on2.png", UriKind.Relative)));
             szlaban1 = new Rectangle()
             {
-                Width = 150,
-                Height = 50
+                Width = 180,
+                Height = 180
             };
             szlaban1.Fill = szlaban_open;
             szlaban2 = new Rectangle()
             {
-                Width = 125,
-                Height = 50
+                Width = 180,
+                Height = 180
             };
             szlaban2.Fill = szlaban_open;
+            swiatla1 = new Rectangle()
+            {
+                Width = 80,
+                Height = 101
+            };
+            swiatla1.Fill = szlaban_off;
+            swiatla2 = new Rectangle()
+            {
+                Width = 80,
+                Height = 101
+            };
+            swiatla2.Fill = szlaban_off;
             ScaleTransform rt = new ScaleTransform();
             rt.ScaleX = -1;
-            szlaban2.RenderTransform = rt;
+            szlaban1.RenderTransform = rt;
+            train_canvas.Children.Add(swiatla1);
+            Canvas.SetLeft(swiatla1, 330);
+            Canvas.SetBottom(swiatla1, -120);
+            Canvas.SetZIndex(swiatla1, 120);
+            train_canvas.Children.Add(swiatla2);
+            Canvas.SetLeft(swiatla2, -10);
+            Canvas.SetBottom(swiatla2, -50);
+            Canvas.SetZIndex(swiatla2, 100);
             train_canvas.Children.Add(szlaban1);
-            Canvas.SetLeft(szlaban1, 220);
-            Canvas.SetZIndex(szlaban1, 100);
+            Canvas.SetLeft(szlaban1, 350);
+            Canvas.SetZIndex(szlaban1, 120);
             Canvas.SetBottom(szlaban1, -120);
             train_canvas.Children.Add(szlaban2);
-            Canvas.SetLeft(szlaban2, 170);
-            Canvas.SetBottom(szlaban2, -50);
-            Canvas.SetZIndex(szlaban2, 50);
+            Canvas.SetLeft(szlaban2, 25);
+            Canvas.SetBottom(szlaban2, -65);
+            Canvas.SetZIndex(szlaban2, 100);
+            Thread light = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                {
+                    light_on();
+                }, null);
+            });
+            light.Start();
+        }
+
+        private void light_on()
+        {
+            timer = new DispatcherTimer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Start();
+        }
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            if (train_isMoving)
+            {
+                if(leftrightlight == 0)
+                {
+                    swiatla1.Fill = szlaban_on1;
+                    swiatla2.Fill = szlaban_on1;
+                    leftrightlight = 1;
+                }
+                else if (leftrightlight == 1)
+                {
+                    swiatla1.Fill = szlaban_on2;
+                    swiatla2.Fill = szlaban_on2;
+                    leftrightlight = 0;
+                }
+            }
+            else
+            {
+                swiatla1.Fill = szlaban_off;
+                swiatla2.Fill = szlaban_off;
+            }
         }
 
         private void Threads()

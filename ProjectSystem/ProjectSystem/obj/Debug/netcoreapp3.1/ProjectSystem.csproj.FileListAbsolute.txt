@@ -4,7 +4,6 @@ C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\
 C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\bin\Debug\netcoreapp3.1\ProjectSystem.runtimeconfig.dev.json
 C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\bin\Debug\netcoreapp3.1\ProjectSystem.dll
 C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\bin\Debug\netcoreapp3.1\ProjectSystem.pdb
-C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\ProjectSystem.csprojAssemblyReference.cache
 C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\MainWindow.g.cs
 C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\App.g.cs
 C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\ProjectSystem_MarkupCompile.cache
@@ -61,3 +60,4 @@ C:\Users\m_war\Source\Repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\
 C:\Users\m_war\Source\Repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\ProjectSystem.dll
 C:\Users\m_war\Source\Repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\ProjectSystem.pdb
 C:\Users\m_war\Source\Repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\ProjectSystem.genruntimeconfig.cache
+C:\Users\zwari\source\repos\setmatrix\ProjectSystem\ProjectSystem\ProjectSystem\obj\Debug\netcoreapp3.1\ProjectSystem.csproj.AssemblyReference.cache
