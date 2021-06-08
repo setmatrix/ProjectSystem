@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("ProjectSystem")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("ProjectSystem_brdqhaq3_wpftmp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("ProjectSystem")]
-[assembly: System.Reflection.AssemblyTitleAttribute("ProjectSystem")]
+[assembly: System.Reflection.AssemblyProductAttribute("ProjectSystem_brdqhaq3_wpftmp")]
+[assembly: System.Reflection.AssemblyTitleAttribute("ProjectSystem_brdqhaq3_wpftmp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Wygenerowane przez klasę WriteCodeFragment programu MSBuild.
