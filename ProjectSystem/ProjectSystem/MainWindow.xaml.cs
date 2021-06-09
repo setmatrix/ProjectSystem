@@ -232,7 +232,7 @@ namespace ProjectSystem
             number++;
 
 
-            carrnd = number+1;
+
 
             int dex = rnd.Next(3, 7);
             int index = 0;
