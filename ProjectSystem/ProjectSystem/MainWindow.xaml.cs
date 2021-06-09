@@ -231,6 +231,9 @@ namespace ProjectSystem
             Random rnd = new Random();
             number++;
 
+
+            carrnd = number+1;
+
             int dex = rnd.Next(3, 7);
             int index = 0;
             Control.Content = index;
