@@ -57,8 +57,8 @@ namespace ProjectSystem
 
         private DispatcherTimer timer;
 
-        Rect auto1HitBox = new Rect();
-        Rect auto2HitBox = new Rect();
+        //Rect auto1HitBox = new Rect();
+        //Rect auto2HitBox = new Rect();
 
         public MainWindow()
         {
@@ -223,34 +223,49 @@ namespace ProjectSystem
         {
             while (true)
             {
-                Thread car = new Thread(() =>
+                for (int i = 0; i < 20; i++)
                 {
-                    Thread.CurrentThread.IsBackground = true;
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                    Thread car = new Thread(() =>
                     {
-                        setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_1, 5);
-                    }, null);
-                });
-                car.Start();
-                await Task.Delay(rnd.Next(4000, 5000));
+                        Thread.CurrentThread.IsBackground = true;
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                        {
+                            setCarMove(animXBef, animXTo, animYBef, animYTo, canvas_1, 5);
+                        }, null);
+                    });
+                    car.Start();
+                    await Task.Delay(rnd.Next(4000, 5000));
+                }
+                while (canvas_1.Children.Count > 0)
+                {
+                    await Task.Delay(rnd.Next(3000));
+                }
             }
+            
         }
 
         private async void RespawnCarsRev()
         {
             while (true)
             {
-                Thread carrev = new Thread(() =>
+                for (int i = 0; i < 20; i++)
                 {
-                    Thread.CurrentThread.IsBackground = true;
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                    Thread carrev = new Thread(() =>
                     {
-                        setCarMove(animXBefRev, animXToRev, animYBefRev, animYToRev, canvas_2, 1);
-                    }, null);
-                });
-                carrev.Start();
-                await Task.Delay(rnd.Next(4000, 5000));
+                        Thread.CurrentThread.IsBackground = true;
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
+                        {
+                            setCarMove(animXBefRev, animXToRev, animYBefRev, animYToRev, canvas_2, 1);
+                        }, null);
+                    });
+                    carrev.Start();
+                    await Task.Delay(rnd.Next(4000, 5000));
             }
+            while (canvas_2.Children.Count > 0)
+            {
+                await Task.Delay(rnd.Next(3000));
+            }
+        }
         }
 
         private void setTrainMove()
@@ -458,38 +473,31 @@ namespace ProjectSystem
             {
                 foreach (var x in can.Children.OfType<Rectangle>())
                 {
+                    Rect auto1HitBox = new Rect();
+                    Rect auto2HitBox = new Rect();
 
-                    auto1HitBox = new Rect(Canvas.GetLeft(autko) - 35 / dex, Canvas.GetTop(autko), autko.Width + 30, autko.Height + 12);
-                    auto2HitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width + 30, x.Height + 12);
+                    auto1HitBox = new Rect(Canvas.GetLeft(autko), Canvas.GetTop(autko), autko.Width + 100, autko.Height + 50);
+                    auto2HitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width + 100, x.Height + 50);
+                    
 
-                    if (auto1HitBox.IntersectsWith(auto2HitBox) && (string)x.Name != (string)autko.Name && (autko.Name[(autko.Name).Length - 1]) > (x.Name[(x.Name).Length - 1]) && direct[(autko.Name[(autko.Name).Length - 1]) - 48] == direct[(x.Name[(x.Name).Length - 1]) - 48])
+                    if (auto1HitBox.IntersectsWith(auto2HitBox) && /* (string)x.Name != (string)autko.Name && (autko.Name[(autko.Name).Length - 1]) > (x.Name[(x.Name).Length - 1]) &&*/ direct[(autko.Name[(autko.Name).Length - 1]) - 48] == direct[(x.Name[(x.Name).Length - 1]) - 48])
                     {
 
                         double pomocnicza = list_speed[(autko.Name[(autko.Name).Length - 1]) - 48];
                         double pomocnicza2 = list_speed[(x.Name[(x.Name).Length - 1]) - 48];
-
-                        animMove_x.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
-                        animMove_y.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
-
-                        //if (list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] <= list_speed2[(x.Name[(x.Name).Length - 1]) - 48])
-                        //{
-                        //story.SetSpeedRatio((double)(pomocnicza / (pomocnicza2)));
-                        //autko.Name = x.Name;
-                        //}
-
+                        
                         if (train_isMoving && czy_czeka[(x.Name[(x.Name).Length - 1]) - 48] == 1)
                         {
                             czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] = 1;
                         }
                         else
                         {
-                            story.SetSpeedRatio((double)(pomocnicza / pomocnicza2));
                             autko.Name = x.Name;
+                            story.SetSpeedRatio((double)(pomocnicza / pomocnicza2));
+                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
+                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
                         }
                         
-                        
-                        //list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] = list_speed[(x.Name[(x.Name).Length - 1]) - 48];
-                        //list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] = list_speed2[(x.Name[(x.Name).Length - 1]) - 48];
                     }
                 }
                 if (czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] == 1)
@@ -550,8 +558,8 @@ namespace ProjectSystem
                 }
                 else
                 {
-                    //canvas_1.Children.Remove(autko);
-                    //canvas_2.Children.Remove(autko);
+                    canvas_1.Children.Remove(autko);
+                    canvas_2.Children.Remove(autko);
                     can.Children.Remove(autko);
                     story.Remove();
                     return;
