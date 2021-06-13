@@ -42,14 +42,22 @@ namespace ProjectSystem
 
         private DoubleAnimation trainMove = new DoubleAnimation();
 
-        private List<double> list_speed = new List<double>();
-        private List<int> list_speed2 = new List<int>();
-        private List<int> czy_czeka = new List<int>();
-        private List<int> direct = new List<int>();
+        //private List<double> list_speed = new List<double>();
+        //private List<int> list_speed2 = new List<int>();
+        //private List<int> czy_czeka = new List<int>();
+        //private List<int> direct = new List<int>();
+
+        int[] direct = new int[10];
+        double[] list_speed = new double[10];
+        int[] list_speed2 = new int[10];
+        int[] czy_czeka = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+
 
         private int leftrightlight = 0;
 
         private int number = -1;
+        private int kazde_inne = -1;
 
         private ScaleTransform trainrot = new ScaleTransform();
 
@@ -57,8 +65,8 @@ namespace ProjectSystem
 
         private DispatcherTimer timer;
 
-        //Rect auto1HitBox = new Rect();
-        //Rect auto2HitBox = new Rect();
+        Rect auto1HitBox = new Rect();
+        Rect auto2HitBox = new Rect();
 
         public MainWindow()
         {
@@ -165,7 +173,7 @@ namespace ProjectSystem
         {
             if (train_isMoving)
             {
-                if(leftrightlight == 0)
+                if (leftrightlight == 0)
                 {
                     swiatla1.Fill = szlaban_on1;
                     swiatla2.Fill = szlaban_on1;
@@ -195,7 +203,7 @@ namespace ProjectSystem
                     setTrainMove();
                 }, null);
             });
-            Thread res= new Thread(() =>
+            Thread res = new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (SendOrPostCallback)delegate
@@ -223,7 +231,7 @@ namespace ProjectSystem
         {
             while (true)
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     Thread car = new Thread(() =>
                     {
@@ -234,22 +242,23 @@ namespace ProjectSystem
                         }, null);
                     });
                     car.Start();
-                    await Task.Delay(rnd.Next(4000, 5000));
+                    await Task.Delay(rnd.Next(2000, 3000));
                 }
-                while (canvas_1.Children.Count > 0)
+                while (canvas_1.Children.Count > 0 && canvas_2.Children.Count > 0)
                 {
-                    await Task.Delay(rnd.Next(3000));
+                    await Task.Delay(3000);
                 }
             }
-            
         }
 
         private async void RespawnCarsRev()
         {
             while (true)
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 5; i++)
                 {
+
+
                     Thread carrev = new Thread(() =>
                     {
                         Thread.CurrentThread.IsBackground = true;
@@ -259,13 +268,13 @@ namespace ProjectSystem
                         }, null);
                     });
                     carrev.Start();
-                    await Task.Delay(rnd.Next(4000, 5000));
+                    await Task.Delay(rnd.Next(2000, 3000));
+                }
+                while (canvas_2.Children.Count > 0 && canvas_1.Children.Count > 0)
+                {
+                    await Task.Delay(3000);
+                }
             }
-            while (canvas_2.Children.Count > 0)
-            {
-                await Task.Delay(rnd.Next(3000));
-            }
-        }
         }
 
         private void setTrainMove()
@@ -287,10 +296,10 @@ namespace ProjectSystem
                 szlaban2.Fill = szlaban_open;
                 train_isMoving = false;
                 rnd = new Random();
-                await Task.Delay(rnd.Next(2000, 10000));
+                await Task.Delay(rnd.Next(4000, 8000));
                 train_storyboard.Stop();
                 rnd = new Random();
-                trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(4, 13)));
+                trainMove.Duration = new Duration(TimeSpan.FromSeconds(rnd.Next(5, 13)));
                 kier = rnd.Next(1, 3);
                 if (kier == 1)
                 {
@@ -399,10 +408,14 @@ namespace ProjectSystem
 
         private void setCarMove(int[] animxbef, int[] animxto, int[] animybef, int[] animyto, Canvas can, int direction)
         {
+            if (number % 9 == 0 && number > 1)
+            {
+                number = -1;
+            }
             Random rnd = new Random();
-            number+=1;
-
-            int dex = rnd.Next(6, 9);
+            number++;
+            kazde_inne++;
+            int dex = rnd.Next(4, 9);
             int index = 0;
 
             Rectangle autko = new Rectangle()
@@ -411,7 +424,7 @@ namespace ProjectSystem
                 Height = 50
             };
             rnd = new Random();
-            switch(rnd.Next(0,3))
+            switch (rnd.Next(0, 3))
             {
                 case 0:
                     autko.Fill = new ImageBrush
@@ -432,36 +445,40 @@ namespace ProjectSystem
                     };
                     break;
             }
-            
-            autko.Name = "auto" + number;
-            list_speed2.Add(dex);
-            czy_czeka.Add(0);
-            direct.Add(direction);
+
+            autko.Name = "auto" + kazde_inne + number;
+            list_speed2[number] = dex;
+            //czy_czeka[number] = 0;
+            //list_speed2.Add(dex);
+            //czy_czeka.Add(0);
+            direct[number] = direction;
+            //direct.Add(direction);
             Storyboard story = new Storyboard();
             DoubleAnimation animMove_x = new DoubleAnimation();
             DoubleAnimation animMove_y = new DoubleAnimation();
-                //animMove_1_x
-                animMove_x.From = animxbef[index];
-                animMove_x.To = animxto[index];
-                //distance_x = 900 - 800;
-                //animMove_1_y
-                animMove_y.From = animybef[index];
-                animMove_y.To = animyto[index];
-                animMove_x.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[number]));
-                animMove_y.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[number]));
-                //animMove_1_x
-                Storyboard.SetTarget(animMove_x, autko);
-                Storyboard.SetTargetProperty(animMove_x, new PropertyPath(Canvas.LeftProperty));
-                story.Children.Add(animMove_x);
-                //animMove_1_y
-                Storyboard.SetTarget(animMove_y, autko);
-                Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
-                story.Children.Add(animMove_y);
+            //animMove_1_x
+            animMove_x.From = animxbef[index];
+            animMove_x.To = animxto[index];
+            //distance_x = 900 - 800;
+            //animMove_1_y
+            animMove_y.From = animybef[index];
+            animMove_y.To = animyto[index];
+            animMove_x.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[number]));
+            animMove_y.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[number]));
+            //animMove_1_x
+            Storyboard.SetTarget(animMove_x, autko);
+            Storyboard.SetTargetProperty(animMove_x, new PropertyPath(Canvas.LeftProperty));
+            story.Children.Add(animMove_x);
+            //animMove_1_y
+            Storyboard.SetTarget(animMove_y, autko);
+            Storyboard.SetTargetProperty(animMove_y, new PropertyPath(Canvas.TopProperty));
+            story.Children.Add(animMove_y);
             ////
-            double reverse_velocity = (double)dex / Math.Abs((animxto[index]- animxbef[index])) ;
+            double reverse_velocity = (double)dex / Math.Abs((animxto[index] - animxbef[index]));
             can.Children.Add(autko);
             //list_speed.Add(dex/(animXBef[index]-animXTo[index]));
-            list_speed.Add(reverse_velocity);
+            //list_speed.Add(reverse_velocity);
+            list_speed[number] = reverse_velocity;
             Canvas.SetTop(autko, 125);
             Canvas.SetLeft(autko, 78);
             //index++;
@@ -473,36 +490,48 @@ namespace ProjectSystem
             {
                 foreach (var x in can.Children.OfType<Rectangle>())
                 {
-                    Rect auto1HitBox = new Rect();
-                    Rect auto2HitBox = new Rect();
 
-                    auto1HitBox = new Rect(Canvas.GetLeft(autko), Canvas.GetTop(autko), autko.Width + 100, autko.Height + 50);
-                    auto2HitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width + 100, x.Height + 50);
-                    
+                    auto1HitBox = new Rect(Canvas.GetLeft(autko) - 35 / dex, Canvas.GetTop(autko), autko.Width + 30, autko.Height + 12);
+                    auto2HitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width + 30, x.Height + 12);
 
-                    if (auto1HitBox.IntersectsWith(auto2HitBox) && /* (string)x.Name != (string)autko.Name && (autko.Name[(autko.Name).Length - 1]) > (x.Name[(x.Name).Length - 1]) &&*/ direct[(autko.Name[(autko.Name).Length - 1]) - 48] == direct[(x.Name[(x.Name).Length - 1]) - 48])
+                    if (auto1HitBox.IntersectsWith(auto2HitBox) && (string)x.Name != (string)autko.Name && (autko.Name[(autko.Name).Length - 1]) > (x.Name[(x.Name).Length - 1]))
                     {
 
                         double pomocnicza = list_speed[(autko.Name[(autko.Name).Length - 1]) - 48];
                         double pomocnicza2 = list_speed[(x.Name[(x.Name).Length - 1]) - 48];
-                        
-                        if (train_isMoving && czy_czeka[(x.Name[(x.Name).Length - 1]) - 48] == 1)
+
+                        //animMove_x.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
+                        //animMove_y.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
+
+                        if (list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] < list_speed2[(x.Name[(x.Name).Length - 1]) - 48])
+                        {
+                            story.SetSpeedRatio((double)(pomocnicza / (pomocnicza2)));
+                            autko.Name = x.Name;
+                        }
+                        //else
+                        //{
+                        //    story.SetSpeedRatio(1);
+                        //}
+
+                        if (czy_czeka[(x.Name[(x.Name).Length - 1]) - 48] == 1)
                         {
                             czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] = 1;
                         }
-                        else
-                        {
-                            autko.Name = x.Name;
-                            story.SetSpeedRatio((double)(pomocnicza / pomocnicza2));
-                            animMove_x.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
-                            animMove_y.Duration = new Duration(TimeSpan.FromSeconds(list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48]));
-                        }
-                        
+                        //else
+                        //{
+                        //    story.SetSpeedRatio((double)(pomocnicza / pomocnicza2));
+                        //    list_speed[(autko.Name[(autko.Name).Length - 1]) - 48] = list_speed[(x.Name[(x.Name).Length - 1]) - 48];
+                        //    list_speed2[(autko.Name[(autko.Name).Length - 1]) - 48] = list_speed2[(x.Name[(x.Name).Length - 1]) - 48];
+                        //    //autko.Name = x.Name;
+                        //}
+
+                        break;
+
                     }
                 }
                 if (czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] == 1)
                 {
-                    while (train_isMoving)
+                    while (train_isMoving&& (index==0 || index==4 || index==3 ))
                     {
                         story.Pause();
                         await Task.Delay(50);
@@ -510,15 +539,16 @@ namespace ProjectSystem
                     story.Resume();
                     czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] = 0;
                 }
-                
+
             }
             async void MoveReverse(object sender, EventArgs e)
             {
                 if (index < 6)
                 {
-                    index +=1;
-                    story.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
-                   // Control.Content = index;
+                    index += 1;
+                    //int tor = 0;
+
+                    // Control.Content = index;
                     //animMove_1_x
                     animMove_x.From = animxbef[index];
                     animMove_x.To = animxto[index];
@@ -549,17 +579,17 @@ namespace ProjectSystem
                         {
                             czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] = 1;
                             story.Pause();
-                            await Task.Delay(25);
+                            await Task.Delay(50);
                         }
                         czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] = 0;
                     }
-                    
+                    story.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
                     story.Begin();
                 }
                 else
                 {
-                    canvas_1.Children.Remove(autko);
-                    canvas_2.Children.Remove(autko);
+                    //canvas_1.Children.Remove(autko);
+                    //canvas_2.Children.Remove(autko);
                     can.Children.Remove(autko);
                     story.Remove();
                     return;
@@ -572,7 +602,7 @@ namespace ProjectSystem
         //    rnd = new Random();
         //    number++;
 
-            
+
         //    // ABy sprawdzić jak auto się zbliża do innego auto, bez zbędnego ponownego urochamiania aby dobre prędkości wylosowało
         //    if (number == 0)
         //    {
@@ -661,6 +691,6 @@ namespace ProjectSystem
         //        storyboard_1.Begin();
         //    }
         //}
-        
+
     }
 }
