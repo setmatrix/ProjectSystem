@@ -604,6 +604,7 @@ namespace ProjectSystem
                             await Task.Delay(50);
                         }
                         czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] = 0; //po skończeniu jazdy pociągu nie czekaj
+                        mutex.ReleaseMutex();
                     }
                     //MainTimerEvent to funkcja wykrywająca bliskie zderzenia (generuje hitboxy itd)
                     story.CurrentTimeInvalidated += new EventHandler(MainTimerEvent);
