@@ -52,7 +52,7 @@ namespace ProjectSystem
         int[] list_speed2 = new int[10];
         int[] czy_czeka = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-
+        private Mutex mutex = new Mutex();
 
         private int leftrightlight = 0;
 
@@ -315,10 +315,12 @@ namespace ProjectSystem
             //zamknięcie szlabanów
             szlaban1.Fill = szlaban_closed; 
             szlaban2.Fill = szlaban_closed;
+            mutex.WaitOne();
 
             async void TrainRestart(object sender, EventArgs e)
             {
                 //otwarcie szlabanów
+                mutex.ReleaseMutex();
                 szlaban1.Fill = szlaban_open;
                 szlaban2.Fill = szlaban_open;
                 train_isMoving = false; //oznajmienie, że pociąg nie jedzie
@@ -346,6 +348,7 @@ namespace ProjectSystem
                 train_storyboard.Begin(); //rozpoczęcie animacji
                 train_isMoving = true; //oznajmienie że pociąg się rusza
                 //zamknięcie szlabanów
+                mutex.WaitOne();
                 szlaban1.Fill = szlaban_closed;
                 szlaban2.Fill = szlaban_closed;
             }
@@ -592,7 +595,8 @@ namespace ProjectSystem
                     //te 2 wartości odpowiadają numerom animacji, które rozpoczynają się przed szlabanem
                     if (index == direction)
                     {
-                        //sprawdzenie czy jedzie pociąg 
+                        mutex.WaitOne();
+                        ////sprawdzenie czy jedzie pociąg 
                         while (train_isMoving)
                         {
                             czy_czeka[(autko.Name[(autko.Name).Length - 1]) - 48] = 1;
