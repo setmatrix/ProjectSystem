@@ -184,7 +184,7 @@ namespace ProjectSystem
             
             if (train_isMoving)
             {
-                //jeśli pociąg jedzie to światła zaczną świecić (czli będą się zmieniać ich obrazki)
+                //jeśli pociąg jedzie to światła zaczną świecić (czyli będą się zmieniać ich obrazki)
                 if (leftrightlight == 0)
                 {
                     swiatla1.Fill = szlaban_on1;
@@ -258,7 +258,7 @@ namespace ProjectSystem
                         }, null);
                     });
                     car.Start();
-                    await Task.Delay(rnd.Next(2000, 3000)); //odsęp czasowy aby auta się nie nałożyły na siebie
+                    await Task.Delay(rnd.Next(2000, 3000)); //odstęp czasowy aby auta się nie nałożyły na siebie
                 }
                 while (canvas_1.Children.Count > 0 && canvas_2.Children.Count > 0) 
                 {
